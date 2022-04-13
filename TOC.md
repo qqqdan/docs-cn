@@ -3,12 +3,12 @@
 
 - 关于 TiDB
   - [TiDB 简介](/overview.md)
-  - [TiDB 5.4 Release Notes](/releases/release-5.4.0.md)
+  - [TiDB 6.0 Release Notes](/releases/release-6.0.0-dmr.md)
   - [基本功能](/basic-features.md)
   - [实验特性](/experimental-features.md)
   - 性能测试报告
-    - [Sysbench 性能对比 - v5.4 对比 v5.3](/benchmark/benchmark-sysbench-v5.4.0-vs-v5.3.0.md)
-    - [TPC-C 性能对比 - v5.4 对比 v5.3](/benchmark/v5.4-performance-benchmarking-with-tpcc.md)
+    - [Sysbench 性能对比 - v6.0 对比 v5.4](/benchmark/benchmark-sysbench-v6.0.0-vs-v5.4.0.md)
+    - [TPC-C 性能对比 - v6.0 对比 v5.4](/benchmark/v6.0-performance-benchmarking-with-tpcc.md)
     - [TPC-H 100 性能对比 - v5.4 MPP 对比 Greenplum / Apache Spark](/benchmark/v5.4-performance-benchmarking-with-tpch.md)
   - [与 MySQL 的兼容性](/mysql-compatibility.md)
   - [使用限制](/tidb-limitations.md)
@@ -70,6 +70,7 @@
         - [在 Azure Blob Storage 备份恢复](/br/backup-and-restore-azblob.md)
       - BR 特性
         - [自动调节](/br/br-auto-tune.md)
+        - [批量建表](/br/br-batch-create-table.md)
       - [BR 常见问题](/br/backup-and-restore-faq.md)
   - [修改时区](/configure-time-zone.md)
   - [日常巡检](/daily-check.md)
@@ -101,6 +102,7 @@
   - [磁盘 I/O 过高](/troubleshoot-high-disk-io.md)
   - [锁冲突与 TTL 超时](/troubleshoot-lock-conflicts.md)
   - [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md)
+  - [数据索引不一致报错](/troubleshoot-data-inconsistency-errors.md)
 - 性能调优
   - 系统调优
     - [操作系统性能参数调优](/tune-operating-system.md)
@@ -265,8 +267,9 @@
       - [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
       - [tiup-mirror 定制离线镜像](/tiup/tiup-mirror.md)
       - [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
-  - PingCAP Clinic 诊断服务 (Beta)
+  - PingCAP Clinic 诊断服务 (Technical Preview)
     - [概述](/clinic/clinic-introduction.md)
+    - [快速上手](/clinic/quick-start-with-clinic.md)
     - [使用 PingCAP Clinic](/clinic/clinic-user-guide-for-tiup.md)
     - [数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)
   - [TiDB Operator](/tidb-operator-overview.md)
@@ -327,6 +330,7 @@
         - [使用 TiUP 运维集群（推荐）](/dm/maintain-dm-using-tiup.md)
         - [1.0.x 到 2.0+ 手动升级](/dm/manually-upgrade-dm-1.0-to-2.0.md)
       - 集群运维工具
+        - [使用 WebUI 管理迁移任务](/dm/dm-webui-guide.md)
         - [使用 dmctl 管理迁移任务](/dm/dmctl-introduction.md)
       - 性能调优
         - [性能数据](/dm/dm-benchmark-v5.4.0.md)
@@ -354,10 +358,11 @@
           - [DM-master 配置](/dm/dm-master-configuration-file.md)
           - [DM-worker 配置](/dm/dm-worker-configuration-file.md)
         - [OpenAPI](/dm/dm-open-api.md)
+        - [兼容性目录](/dm/dm-compatibility-catalog.md)
         - 安全
           - [为 DM 的连接开启加密传输](/dm/dm-enable-tls.md)
           - [生成自签名证书](/dm/dm-generate-self-signed-certificates.md)
-        - 监控告警 
+        - 监控告警
           - [监控指标](/dm/monitor-a-dm-cluster.md)
           - [告警信息](/dm/dm-alert-rules.md)
         - [错误码](/dm/dm-error-handling.md#常见故障处理方法)
@@ -375,6 +380,7 @@
     - [外部存储](/br/backup-and-restore-storages.md)
     - BR 特性
       - [自动调节](/br/br-auto-tune.md)
+      - [批量建表](/br/br-batch-create-table.md)
     - [BR 常见问题](/br/backup-and-restore-faq.md)
   - TiDB Binlog
     - [概述](/tidb-binlog/tidb-binlog-overview.md)
@@ -626,6 +632,7 @@
     - [视图](/views.md)
     - [分区表](/partitioned-table.md)
     - [临时表](/temporary-tables.md)
+    - [缓存表](/cached-tables.md)
     - 字符集和排序
       - [概述](/character-set-and-collation.md)
       - [GBK](/character-set-gbk.md)
@@ -659,7 +666,7 @@
         - [`METRICS_SUMMARY`](/information-schema/information-schema-metrics-summary.md)
         - [`METRICS_TABLES`](/information-schema/information-schema-metrics-tables.md)
         - [`PARTITIONS`](/information-schema/information-schema-partitions.md)
-        - [`PLACEMENT_RULES`](/information-schema/information-schema-placement-rules.md)
+        - [`PLACEMENT_POLICIES`](/information-schema/information-schema-placement-policies.md)
         - [`PROCESSLIST`](/information-schema/information-schema-processlist.md)
         - [`REFERENTIAL_CONSTRAINTS`](/information-schema/information-schema-referential-constraints.md)
         - [`SCHEMATA`](/information-schema/information-schema-schemata.md)
@@ -755,6 +762,8 @@
 - 版本发布历史
   - [发布版本汇总](/releases/release-notes.md)
   - [版本发布时间线](/releases/release-timeline.md)
+  - v6.0
+    - [6.0.0-DMR](/releases/release-6.0.0-dmr.md)
   - v5.4
     - [5.4.0](/releases/release-5.4.0.md)
   - v5.3
