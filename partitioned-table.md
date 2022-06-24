@@ -260,10 +260,6 @@ test> select * from t;
 
 ### List COLUMNS 分区
 
-> **警告：**
->
-> 该功能目前为实验特性，不建议在生产环境中使用。
-
 List COLUMNS 分区是 List 分区的一种变体，可以将多个列用作分区键，并且可以将整数类型以外的数据类型的列用作分区列。你还可以使用字符串类型、`DATE` 和 `DATETIME` 类型的列。
 
 假设商店员工分别来自以下 12 个城市，想要根据相关规定分成 4 个区域，如下表所示：
@@ -829,6 +825,8 @@ SELECT 语句中支持分区选择。实现通过使用一个 `PARTITION` 选项
 {{< copyable "sql" >}}
 
 ```sql
+SET @@sql_mode = '';
+
 CREATE TABLE employees  (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     fname VARCHAR(25) NOT NULL,
