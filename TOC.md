@@ -162,18 +162,18 @@
     - [优化概述](/performance-tuning-overview.md)
     - [优化方法](/performance-tuning-methods.md)
     - [优化实践](/performance-tuning-practices.md)
-  - 配置优化
-    - 系统调优
+  - 配置调优
       - [操作系统性能参数调优](/tune-operating-system.md)
-    - 软件调优
-      - 配置
-        - [TiDB 内存调优](/configure-memory-usage.md)
-        - [TiKV 线程调优](/tune-tikv-thread-performance.md)
-        - [TiKV 内存调优](/tune-tikv-memory-performance.md)
-        - [TiKV Follower Read](/follower-read.md)
-        - [Region 性能调优](/tune-region-performance.md)
-        - [TiFlash 调优](/tiflash/tune-tiflash-performance.md)
+      - [TiDB 内存调优](/configure-memory-usage.md)
+      - [TiKV 线程调优](/tune-tikv-thread-performance.md)
+      - [TiKV 内存调优](/tune-tikv-memory-performance.md)
+      - [TiKV Follower Read](/follower-read.md)
+      - [Region 性能调优](/tune-region-performance.md)
+      - [TiFlash 调优](/tiflash/tune-tiflash-performance.md)
       - [下推计算结果缓存](/coprocessor-cache.md)
+      - 垃圾回收 (GC)
+        - [GC 机制简介](/garbage-collection-overview.md)
+        - [GC 配置](/garbage-collection-configuration.md)
   - SQL 性能调优
     - [SQL 性能调优概览](/sql-tuning-overview.md)
     - 理解 TiDB 执行计划
@@ -330,7 +330,7 @@
   - PingCAP Clinic 诊断服务 (Technical Preview)
     - [概述](/clinic/clinic-introduction.md)
     - [快速上手](/clinic/quick-start-with-clinic.md)
-    - [使用 PingCAP Clinic](/clinic/clinic-user-guide-for-tiup.md)
+    - [使用 PingCAP Clinic 诊断 TiDB 集群](/clinic/clinic-user-guide-for-tiup.md)
     - [数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)
   - [TiDB Operator](/tidb-operator-overview.md)
   - [Dumpling](/dumpling-overview.md)
@@ -356,6 +356,7 @@
     - [术语表](/tidb-lightning/tidb-lightning-glossary.md)
   - TiDB Data Migration
     - [关于 Data Migration](/dm/dm-overview.md)
+    - [架构简介](/dm/dm-arch.md)
     - [快速开始](/dm/quick-start-with-dm.md)
     - 部署 DM 集群
       - [软硬件要求](/dm/dm-hardware-and-software-requirements.md)
@@ -364,20 +365,20 @@
       - [使用 Binary 部署](/dm/deploy-a-dm-cluster-using-binary.md)
       - [在 Kubernetes 环境中部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/deploy-tidb-dm)
     - 入门指南
-        - [创建数据源](/dm/quick-start-create-source.md)
-        - [数据源操作](/dm/dm-manage-source.md)
-        - [任务配置向导](/dm/dm-task-configuration-guide.md)
-        - [Table routing](/dm/dm-key-features.md#table-routing)
-        - [Block & Allow Lists](/dm/dm-key-features.md#block--allow-table-lists)
-        - [过滤 binlog 事件](/dm/dm-key-features.md#binlog-event-filter)
-        - [通过 SQL 表达式过滤 DML](/dm/feature-expression-filter.md)
-        - 迁移任务操作
-            - [任务前置检查](/dm/dm-precheck.md)
-            - [创建任务](/dm/dm-create-task.md)
-            - [查询状态](/dm/dm-query-status.md)
-            - [暂停任务](/dm/dm-pause-task.md)
-            - [恢复任务](/dm/dm-resume-task.md)
-            - [停止任务](/dm/dm-stop-task.md)
+      - [创建数据源](/dm/quick-start-create-source.md)
+      - [数据源操作](/dm/dm-manage-source.md)
+      - [任务配置向导](/dm/dm-task-configuration-guide.md)
+      - [Table routing](/dm/dm-key-features.md#table-routing)
+      - [Block & Allow Lists](/dm/dm-key-features.md#block--allow-table-lists)
+      - [过滤 binlog 事件](/dm/dm-key-features.md#binlog-event-filter)
+      - [通过 SQL 表达式过滤 DML](/dm/feature-expression-filter.md)
+      - 迁移任务操作
+        - [任务前置检查](/dm/dm-precheck.md)
+        - [创建任务](/dm/dm-create-task.md)
+        - [查询状态](/dm/dm-query-status.md)
+        - [暂停任务](/dm/dm-pause-task.md)
+        - [恢复任务](/dm/dm-resume-task.md)
+        - [停止任务](/dm/dm-stop-task.md)
     - 进阶教程
       - 分库分表合并迁移
         - [概述](/dm/feature-shard-merge.md)
@@ -390,6 +391,7 @@
       - 集群版本升级
         - [使用 TiUP 运维集群（推荐）](/dm/maintain-dm-using-tiup.md)
         - [1.0.x 到 2.0+ 手动升级](/dm/manually-upgrade-dm-1.0-to-2.0.md)
+        - [在线应用 Hotfix 到 DM 集群](/tiup/tiup-component-dm-patch.md)
       - 集群运维工具
         - [使用 WebUI 管理迁移任务](/dm/dm-webui-guide.md)
         - [使用 dmctl 管理迁移任务](/dm/dmctl-introduction.md)
@@ -408,11 +410,12 @@
       - [日常巡检](/dm/dm-daily-check.md)
      - 参考手册
         - 架构组件
-          - [DM 架构简介](/dm/dm-arch.md)
           - [DM-worker 说明](/dm/dm-worker-intro.md)
           - [安全模式](/dm/dm-safe-mode.md)
           - [Relay Log](/dm/relay-log.md)
           - [DDL 特殊处理说明](/dm/dm-ddl-compatible.md)
+        - 运行机制
+          - [DML 同步机制](/dm/dm-dml-replication-logic.md)
         - 命令行
           - [DM-master & DM-worker](/dm/dm-command-line-flags.md)
         - 配置文件
@@ -482,14 +485,17 @@
     - [概述](/ticdc/ticdc-overview.md)
     - [安装部署](/ticdc/deploy-ticdc.md)
     - [运维管理](/ticdc/manage-ticdc.md)
-    - [故障诊断](/ticdc/troubleshoot-ticdc.md)
-    - [监控指标](/ticdc/monitor-ticdc.md)
-    - [报警规则](/ticdc/ticdc-alert-rules.md)
-    - [TiCDC Open API](/ticdc/ticdc-open-api.md)
-    - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
-    - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)
-    - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
-    - [将 TiDB 集成到 Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
+    - 监控告警
+      - [监控指标](/ticdc/monitor-ticdc.md)
+      - [报警规则](/ticdc/ticdc-alert-rules.md)
+    - [故障处理](/ticdc/troubleshoot-ticdc.md)
+    - 参考指南
+      - [TiCDC Open API](/ticdc/ticdc-open-api.md)
+      - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
+      - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
+      - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)
+      - [将 TiDB 集成到 Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
+    - [常见问题解答](/ticdc/ticdc-faq.md)
     - [术语表](/ticdc/ticdc-glossary.md)
   - TiUniManager
     - [概述](/tiunimanager/tiunimanager-overview.md)
@@ -724,9 +730,6 @@
       - [乐观事务](/optimistic-transaction.md)
       - [悲观事务](/pessimistic-transaction.md)
       - [非事务 DML 语句](/non-transactional-dml.md)
-    - 垃圾回收 (GC)
-      - [GC 机制简介](/garbage-collection-overview.md)
-      - [GC 配置](/garbage-collection-configuration.md)
     - [视图](/views.md)
     - [分区表](/partitioned-table.md)
     - [临时表](/temporary-tables.md)
@@ -868,6 +871,7 @@
     - [5.4.1](/releases/release-5.4.1.md)
     - [5.4.0](/releases/release-5.4.0.md)
   - v5.3
+    - [5.3.2](/releases/release-5.3.2.md)
     - [5.3.1](/releases/release-5.3.1.md)
     - [5.3.0](/releases/release-5.3.0.md)
   - v5.2
