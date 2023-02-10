@@ -17,7 +17,7 @@ TiDB 高度兼容 MySQL 5.7 协议、MySQL 5.7 常用的功能及语法。MySQL 
 除此以外，TiDB 不支持 MySQL 复制协议，但提供了专用工具用于与 MySQL 复制数据：
 
 - 从 MySQL 复制：[TiDB Data Migration (DM)](/dm/dm-overview.md) 是将 MySQL/MariaDB 数据迁移到 TiDB 的工具，可用于增量数据的复制。
-- 向 MySQL 复制：[TiCDC](/ticdc/ticdc-overview.md) 是一款通过拉取 TiKV 变更日志实现的 TiDB 增量数据同步工具，可通过 [MySQL sink](/ticdc/ticdc-overview.md#sink-支持) 将 TiDB 增量数据复制到 MySQL。
+- 向 MySQL 复制：[TiCDC](/ticdc/ticdc-overview.md) 是一款通过拉取 TiKV 变更日志实现的 TiDB 增量数据同步工具，可通过 [MySQL sink](/ticdc/ticdc-sink-to-mysql.md) 将 TiDB 增量数据复制到 MySQL。
 
 > **注意：**
 >
@@ -46,6 +46,7 @@ TiDB 高度兼容 MySQL 5.7 协议、MySQL 5.7 常用的功能及语法。MySQL 
 * `OPTIMIZE TABLE` 语法
 * `HANDLER` 语句
 * `CREATE TABLESPACE` 语句
+* "Session Tracker: 将 GTID 上下文信息添加到 OK 包中"
 
 ## 与 MySQL 有差异的特性详细说明
 
@@ -115,6 +116,7 @@ TiDB 中，所有支持的 DDL 变更操作都是在线执行的。与 MySQL 相
 * 分区表支持 `HASH`、`RANGE` 和 `LIST` 分区类型。对于不支持的分区类型，TiDB 可能会报 `Warning: Unsupported partition type %s, treat as normal table` 错误，其中 `%s` 为不支持的具体分区类型。
 * 分区表还支持 `ADD`、`DROP`、`TRUNCATE` 操作。其他分区操作会被忽略。TiDB 不支持以下分区表语法：
     + `PARTITION BY KEY`
+    + `PARTITION BY LINEAR KEY`
     + `SUBPARTITION`
     + `{CHECK|TRUNCATE|OPTIMIZE|REPAIR|IMPORT|DISCARD|REBUILD|REORGANIZE|COALESCE} PARTITION`
 
@@ -190,9 +192,9 @@ TiDB 支持大部分 [SQL 模式](/sql-mode.md)。不支持的 SQL 模式如下�
 - `lower_case_table_names`：
     + TiDB 默认：`2`，且仅支持设置该值为 `2`。
     + MySQL 默认如下：
-        - Linux 系统中该值为 `0`
-        - Windows 系统中该值为 `1`
-        - macOS 系统中该值为 `2`
+        - Linux 系统中该值为 `0`，表示表名和数据库名按照在 `CREATE TABLE` 或 `CREATE DATABASE` 语句中指定的字母大小写存储在磁盘上，且名称比较时区分大小写。
+        - Windows 系统中该值为 `1`，表示表名按照小写字母存储在磁盘上，名称比较时不区分大小写。MySQL 在存储和查询时将所有表名转换为小写。该行为也适用于数据库名称和表的别名。
+        - macOS 系统中该值为 `2`，表示表名和数据库名按照在 `CREATE TABLE` 或 `CREATE DATABASE` 语句中指定的字母大小写存储在磁盘上，但 MySQL 在查询时将它们转换为小写。名称比较时不区分大小写。
 
 - `explicit_defaults_for_timestamp`：
     + TiDB 默认：`ON`，且仅支持设置该值为 `ON`。
@@ -218,4 +220,4 @@ TiDB 支持大部分 [SQL 模式](/sql-mode.md)。不支持的 SQL 模式如下�
 TiDB 不支持 MySQL 中标记为弃用的功能，包括：
 
 * 指定浮点类型的精度。MySQL 8.0 [弃用](https://dev.mysql.com/doc/refman/8.0/en/floating-point-types.html)了此功能，建议改用 `DECIMAL` 类型。
-* `ZEROFILL` 属性。 MySQL 8.0 [弃用](https://dev.mysql.com/doc/refman/8.0/en/numeric-type-attributes.html)了此功能，建议在业务应用中填充数字值。
+* `ZEROFILL` 属性。MySQL 8.0 [弃用](https://dev.mysql.com/doc/refman/8.0/en/numeric-type-attributes.html)了此功能，建议在业务应用中填充数字值。
