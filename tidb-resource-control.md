@@ -41,7 +41,7 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位,
 
 基于上表，假设某个资源组消耗的 TiKV 时间是 `c` 毫秒，`r1` 次请求读取了 `r2` KB 数据，`w1` 次写请求写入了 `w2` KB 数据，集群中非 witness TiKV 节点数是 `n`，则该资源组消耗的总 RU 的公式如下：
 
-`c`\* 1/3 + (`r1` \* 0.25 + `r2` \* 1/64) + (1.5 \* `w1` + `w2` \* 1 \* `n`)
+`c`\* 1/3 + (`r1` \* 0.25 + `r2` \* 1/64) + (`w1` \* 1.5  + `w2` \* 1 \* `n`)
 
 ## 相关参数
 
@@ -57,7 +57,7 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位,
 | `resource-control.enabled`= true  | 流控和调度（推荐组合）                        | 无效配置                         |
 | `resource-control.enabled`= false | 仅流控（不推荐）                           |  特性被关闭                   |
 
-关于资源管控实现机制及相关参数的详细介绍，请参考 [RFC: Global Resource Control in TiDB](https://docs.google.com/document/d/1sV5EVv8Cdpc6aBCDihc2akpE0iuantPf/edit?n=RFC_Global_Resource_Control_in_TiDB.docx#heading=h.sjp9cmjfszlu)。
+关于资源管控实现机制及相关参数的详细介绍，请参考 [RFC: Global Resource Control in TiDB](https://github.com/pingcap/tidb/blob/9fb2d6c35790c4733db0ffa6f3574414c91f1dbb/docs/design/2022-11-25-global-resource-control.md)。
 
 ## 使用方法
 
