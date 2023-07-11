@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/mysql-compatibility/','/docs-cn/dev/reference/mysql-comp
 
 # 与 MySQL 兼容性对比
 
-TiDB 高度兼容 MySQL 5.7 协议、MySQL 5.7 常用的功能及语法。MySQL 5.7 生态中的系统工具（PHPMyAdmin、Navicat、MySQL Workbench、mysqldump、Mydumper/Myloader）、客户端等均适用于 TiDB。
+TiDB 高度兼容 MySQL 协议，以及 MySQL 5.7 和 MySQL 8.0 常用的功能及语法。MySQL 生态中的系统工具（PHPMyAdmin、Navicat、MySQL Workbench、DBeaver 和[其他工具](/develop/dev-guide-third-party-support.md#gui)）、客户端等均适用于 TiDB。
 
 但 TiDB 尚未支持一些 MySQL 功能，可能的原因如下：
 
@@ -46,6 +46,9 @@ TiDB 高度兼容 MySQL 5.7 协议、MySQL 5.7 常用的功能及语法。MySQL 
 * `HANDLER` 语句
 * `CREATE TABLESPACE` 语句
 * "Session Tracker: 将 GTID 上下文信息添加到 OK 包中"
+* 降序索引 [#2519](https://github.com/pingcap/tidb/issues/2519)
+* `SKIP LOCKED` 语法 [#18207](https://github.com/pingcap/tidb/issues/18207)
+* 横向派生表 [#40328](https://github.com/pingcap/tidb/issues/40328)
 
 ## 与 MySQL 有差异的特性详细说明
 
@@ -122,9 +125,12 @@ TiDB 中，所有支持的 DDL 变更操作都是在线执行的。与 MySQL 相
 * 不支持添加或删除 `CLUSTERED` 类型的主键。要了解关于 `CLUSTERED` 主键的详细信息，请参考[聚簇索引](/clustered-indexes.md)。
 * 不支持指定不同类型的索引 (`HASH|BTREE|RTREE|FULLTEXT`)。若指定了不同类型的索引，TiDB 会解析并忽略这些索引。
 * 分区表支持 `HASH`、`RANGE`、`LIST` 和 `KEY` 分区类型。`KEY` 分区类型暂不支持分区字段列表为空的语句。对于不支持的分区类型，TiDB 会报 `Warning: Unsupported partition type %s, treat as normal table` 错误，其中 `%s` 为不支持的具体分区类型。
-* 分区表还支持 `ADD`、`DROP`、`TRUNCATE`、`REORGANIZE` 操作，其他分区操作会被忽略。TiDB 不支持以下分区表语法：
+* Range、Range COLUMNS、List、List COLUMNS 分区表支持 `ADD`、`DROP`、`TRUNCATE`、`REORGANIZE` 操作，其他分区操作会被忽略。
+* Hash 和 Key 分区表支持 `ADD`、`COALESCE`、`TRUNCATE` 操作，其他分区操作会被忽略。
+* TiDB 不支持以下分区表语法：
+
     + `SUBPARTITION`
-    + `{CHECK|TRUNCATE|OPTIMIZE|REPAIR|IMPORT|DISCARD|REBUILD|COALESCE} PARTITION`
+    + `{CHECK|OPTIMIZE|REPAIR|IMPORT|DISCARD|REBUILD} PARTITION`
 
   更多详情，请参考[分区表文档](/partitioned-table.md)。
 

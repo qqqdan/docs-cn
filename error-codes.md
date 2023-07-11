@@ -297,61 +297,57 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
     目前 `LOAD DATA` 不支持从 TiDB 服务器本地导入数据，可以指定 `LOCAL` 从客户端导入，或者将数据上传到 S3/GCS 再进行导入。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md)。
 
-* Error Number: 8155
-
-    目前 `LOAD DATA` 不支持从 local 导入 Parquet 格式的数据文件，只支持从 S3/GCS 导入 Parquet 格式的数据文件。你可以将数据上传到 S3/GCS 后再导入。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md)。
-
 * Error Number: 8156
 
-    `LOAD DATA` 语句的文件路径不能为空。需要设置正确的路径再进行导入。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md)。
+    传入的文件路径不能为空。需要设置正确的路径再进行导入。
 
 * Error Number: 8157
 
-    不支持的数据格式。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 查看支持的数据格式。
+    不支持的文件格式。请参考 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md#format) 查看支持的格式。
 
 * Error Number: 8158
 
-    传入的 S3/GCS 路径无效。请参考[外部存储](/br/backup-and-restore-storages.md)设置有效的路径。
+    传入的文件路径不合法。请根据具体的错误提示进行处理。S3/GCS 路径设置可参考[外部存储](/br/backup-and-restore-storages.md#uri-格式)。
 
 * Error Number: 8159
 
-    TiDB 无法访问 `LOAD DATA` 语句中传入的 S3/GCS 路径。请确保填入的 S3/GCS bucket 存在，且你输入了正确的 access key 和 secret access key 以让 TiDB 服务器有权限访问 S3/GCS 对应的 bucket。
+    TiDB 无法访问传入的 S3/GCS 路径。请确保填写的 S3/GCS bucket 存在，且输入了正确的 Access Key 和 Secret Access Key 以让 TiDB 服务器有权限访问 S3/GCS 对应的 bucket。
 
 * Error Number: 8160
 
-    `LOAD DATA` 读取数据文件失败。请根据具体的错误提示进行处理。
+    读取数据文件失败。请根据具体的错误提示进行处理。
 
 * Error Number: 8162
 
-    `LOAD DATA` 语句存在错误。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 查看已支持的功能。
+    语句存在错误。请根据具体的错误提示进行处理。
 
 * Error Number: 8163
 
-    未知的 `LOAD DATA ... WITH ...` 选项。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 查看支持的选项。
+    未知的选项。请参考 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md#参数说明) 查看支持的选项。
 
 * Error Number: 8164
 
-    `LOAD DATA ... WITH ...` 选项取值无效。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 查看有效的取值。
+    选项取值无效。请参考 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md#参数说明) 查看有效的取值。
 
 * Error Number: 8165
 
-    重复指定了 `LOAD DATA ... WITH ...` 选项，每个选项只能指定一次。
+    重复指定了选项，每个选项只能指定一次。
 
 * Error Number: 8166
 
-    某些 `LOAD DATA ... WITH ...` 选项只能在特定的导入模式下才可以使用。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 查看支持的选项。
+    某些选项只能在特定的条件下才可以使用。请根据具体的错误提示进行处理。请参考 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md#参数说明) 查看支持的选项。
 
 * Error Number: 8170
 
-    指定的 `LOAD DATA` job 不存在或不是由当前用户创建。目前用户只能查看自己创建的 job。
+    指定的 job 不存在。
 
 * Error Number: 8171
 
-    对不支持的 `LOAD DATA` 任务状态不能进行运维操作。请根据具体的错误提示进行处理。
+    该 job 的状态不能进行当前操作。请根据具体的错误提示进行处理。
 
-* Error Number: 8172
+* Error Number: 8173
 
-    指定 `LOCAL` 的 `LOAD DATA` 不能在后台运行，只有使用 S3/GCS 路径的 `LOAD DATA` 可以在后台运行。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 更改 SQL 语句。
+    执行 `IMPORT INTO` 时，TiDB 会对当前环境进行检查，比如检查下游表是否为空等。请根据具体的错误提示进行处理。
 
 * Error Number: 8200
 
@@ -400,6 +396,54 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 * Error Number: 8230
 
     TiDB 目前不支持在新添加的列上使用 Sequence 作为默认值，如果尝试进行这类操作会返回该错误。
+
+* Error Number: 8248
+
+    资源组已存在。在重复创建资源组时返回该错误。
+
+* Error Number: 8249
+
+    资源组不存在。在修改或绑定不存在的资源组时返回该错误。请参考[创建资源组](/tidb-resource-control.md#创建资源组)。
+
+* Error Number: 8250
+
+    完整的报错信息如下：
+
+    `ERROR 8250 (HY000) : Resource control feature is disabled. Run "SET GLOBAL tidb_enable_resource_control='on'" to enable the feature`
+
+    资源控制的功能没有打开时，使用资源管控 (Resource Control) 相关功能会返回该错误。你可以开启全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 启用资源管控。
+
+* Error Number: 8251
+
+    `Resource Control` 组件在 TiDB 启动时进行初始化，相关配置会从 `Resource Control` 的服务端 `Resource Manager` 上获取，如果此过程中出错，则会返回此错误。
+
+* Error Number: 8252
+
+    完整的报错信息如下：
+
+    `ERROR 8252 (HY000) : Exceeded resource group quota limitation`
+
+    在尝试消耗超过资源组的限制时返回该错误。一般出现该错误，是由于单次事务太大或者并发太多导致，需调整事务大小或减少客户端并发数。
+
+* Error Number: 8253
+
+    查询终止，因为满足 Runaway Queries 的条件。请参考 [Runaway Queries](/tidb-resource-control.md#管理资源消耗超出预期的查询-runaway-queries)。
+
+* Error Number: 8254
+
+    查询终止，因为被 Runaway Queries 免疫命中。请参考 [Runaway Queries](/tidb-resource-control.md#管理资源消耗超出预期的查询-runaway-queries)。
+
+* Error Number: 8260
+
+    DDL 操作无法被 `ADMIN PAUSE` 暂停运行。
+
+* Error Number: 8261
+
+    DDL 操作无法被 `ADMIN RESUME` 恢复运行。
+
+* Error Number: 8262
+
+    DDL 已经被 `ADMIN PAUSE` 暂停，无法再次执行。
 
 * Error Number: 9001
 

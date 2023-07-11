@@ -5,10 +5,6 @@ summary: 了解 information_schema 表 `RESOURCE_GROUPS`。
 
 # RESOURCE_GROUPS
 
-> **警告:**
->
-> 资源管控是 TiDB 在 v6.6.0 中引入的实验特性，其语法或者行为表现在 GA 前可能会发生变化。
-
 `RESOURCE_GROUPS` 表展示所有资源组 (resource group) 的信息，见[使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md)。
 
 ```sql
@@ -68,11 +64,11 @@ SELECT * FROM information_schema.resource_groups WHERE NAME = 'rg1'; -- 查看�
 ```
 
 ```sql
-+------+------------+----------+-----------+
-| NAME | RU_PER_SEC | PRIORITY | BURSTABLE |
-+------+------------+----------+-----------+
-| rg1  |       1000 | MEDIUM   | NO        |
-+------+------------+----------+-----------+
++------+------------+----------+-----------+-------------+
+| NAME | RU_PER_SEC | PRIORITY | BURSTABLE | QUERY_LIMIT |
++------+------------+----------+-----------+-------------+
+| rg1  | 1000       | MEDIUM   | NO        | NULL        |
++------+------------+----------+-----------+-------------+
 1 row in set (0.00 sec)
 ```
 
